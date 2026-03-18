@@ -10,6 +10,8 @@ from openai import OpenAI
 api_key = st.secrets.get("DEEPSEEK_API_KEY", "")
 client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
+N_ROWS = 20000
+
 @st.cache_resource
 def load_model():
     # 多语言语义模型，负责中英文对齐
@@ -18,8 +20,8 @@ def load_model():
 @st.cache_data
 def load_data():
     try:
-        # 仅读取前 10,000 行，平衡内存与覆盖率
-        products = pd.read_csv("amazon_products.csv", nrows=10000)
+        # 仅读取前 N_ROWS 行，平衡内存与覆盖率
+        products = pd.read_csv("amazon_products.csv", nrows=N_ROWS)
         categories = pd.read_csv("amazon_categories.csv")
         
         cat_dict = dict(zip(categories['id'], categories['category_name']))
@@ -61,9 +63,9 @@ def get_recommendations(query, df, model, sort_mode, top_k=3):
     else:
         candidates = pd.DataFrame()
 
-    # 2. 如果关键词没中，或者太少，则直接用前 500 条做语义对比
+    # 2. 如果关键词没中，或者太少，则直接全量筛选
     if len(candidates) < 5:
-        candidates = df.head(500).copy()
+        candidates = df.head(N_ROWS).copy()
 
     # 3. 语义向量计算
     query_vec = model.encode(query, convert_to_tensor=True)
@@ -133,4 +135,4 @@ if query:
                         st.write("DeepSeek AI 正在休息，请稍后再试。")
 
 st.divider()
-st.caption("注：本系统仅检索前 10,000 条样本数据以保证响应速度。")
+st.caption("注：本系统仅检索表中前万行样本数据以保证响应速度。")
