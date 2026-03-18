@@ -1,7 +1,6 @@
 # Amazon-GenRec-Pro: 基于 DeepSeek 的专业级生成式推荐系统
 
 ![Streamlit App](https://static.streamlit.io) 
-**项目版本：** v2.0 (2026.01 增强版)  
 **核心架构：** 语义对齐召回 (Sentence-Transformer) + 业务逻辑重排 (Rerank) + 大模型推理 (DeepSeek-V3/R1)
 
 ---
