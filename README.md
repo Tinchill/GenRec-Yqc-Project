@@ -1,6 +1,7 @@
 # Amazon-GenRec: 基于 DeepSeek 的生成式推荐系统
 
 **核心架构：** 语义对齐召回 (Sentence-Transformer) + 业务逻辑重排 (Rerank) + 大模型推理 (DeepSeek-V3/R1)
+
 **使用页面：** https://genrec-yqc-project.streamlit.app/
 
 ---
